@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import heroImage from "@/assets/hero-combined.jpg";
+import techBackground from "@/assets/tech-background.jpg";
 
 const Hero = () => {
   return (
@@ -30,12 +30,22 @@ const Hero = () => {
           </div>
           
           <div className="relative animate-slide-up">
-            <Card className="overflow-hidden shadow-elegant">
-              <img 
-                src={heroImage} 
-                alt="فاضل المبارك"
-                className="w-full h-80 object-cover"
+            <Card className="overflow-hidden shadow-elegant relative">
+              {/* خلفية تقنية */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${techBackground})` }}
               />
+              {/* طبقة شفافة للتحكم في التباين */}
+              <div className="absolute inset-0 bg-primary/20"></div>
+              {/* الصورة الشخصية */}
+              <div className="relative z-10 flex items-center justify-center h-80 p-8">
+                <img 
+                  src="/lovable-uploads/fe9eb7d9-8317-411c-864d-5f65e4209548.png" 
+                  alt="فاضل المبارك"
+                  className="max-w-full max-h-full object-contain rounded-lg shadow-hover"
+                />
+              </div>
             </Card>
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-lg"></div>
           </div>
