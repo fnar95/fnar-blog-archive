@@ -33,7 +33,7 @@ const Hero = () => {
               <img 
                 src="/lovable-uploads/fe9eb7d9-8317-411c-864d-5f65e4209548.png" 
                 alt="فاضل المبارك"
-                className="w-full h-96 object-cover"
+                className="w-full h-80 object-contain bg-gradient-card"
               />
             </Card>
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-lg"></div>
