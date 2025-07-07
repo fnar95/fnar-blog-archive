@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import heroImage from "@/assets/hero-image.jpg";
 
 const Hero = () => {
   return (
@@ -32,7 +31,7 @@ const Hero = () => {
           <div className="relative animate-slide-up">
             <Card className="overflow-hidden shadow-elegant">
               <img 
-                src={heroImage} 
+                src="/lovable-uploads/fe9eb7d9-8317-411c-864d-5f65e4209548.png" 
                 alt="فاضل المبارك"
                 className="w-full h-96 object-cover"
               />
