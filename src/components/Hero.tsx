@@ -35,7 +35,7 @@ const Hero = () => {
                 <img 
                   src={blendedHeroImage}
                   alt="فاضل المبارك"
-                  className="w-full h-full object-cover rounded-lg shadow-hover"
+                  className="max-w-[280px] max-h-[280px] object-contain rounded-lg shadow-hover"
                 />
               </div>
             </Card>
