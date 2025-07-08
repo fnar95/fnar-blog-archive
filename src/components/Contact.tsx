@@ -4,8 +4,48 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, MessageSquare, Send, ExternalLink } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 const Contact = () => {
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactFormData>();
+  const { toast } = useToast();
+
+  const onSubmit = async (data: ContactFormData) => {
+    try {
+      const { data: result, error } = await supabase.functions.invoke('send-contact-email', {
+        body: data
+      });
+
+      if (error) throw error;
+
+      if (result?.success) {
+        toast({
+          title: "تم إرسال الرسالة بنجاح!",
+          description: "شكراً لتواصلك معي. سأرد عليك في أقرب وقت ممكن.",
+        });
+        reset();
+      } else {
+        throw new Error(result?.error || "فشل في إرسال الرسالة");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "خطأ في إرسال الرسالة",
+        description: "حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى.",
+        variant: "destructive",
+      });
+    }
+  };
   const socialLinks = [
     {
       name: "تويتر",
@@ -51,57 +91,87 @@ const Contact = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name" className="text-sm font-medium mb-2 block">
+                      الاسم *
+                    </Label>
+                    <Input 
+                      id="name" 
+                      {...register("name", { required: "الاسم مطلوب" })}
+                      placeholder="اسمك الكريم"
+                      className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-destructive mt-1">{errors.name.message}</p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="email" className="text-sm font-medium mb-2 block">
+                      البريد الإلكتروني *
+                    </Label>
+                    <Input 
+                      id="email" 
+                      type="email"
+                      {...register("email", { 
+                        required: "البريد الإلكتروني مطلوب",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "يرجى إدخال بريد إلكتروني صحيح"
+                        }
+                      })}
+                      placeholder="email@example.com"
+                      className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+                    )}
+                  </div>
+                </div>
+                
                 <div>
-                  <Label htmlFor="name" className="text-sm font-medium mb-2 block">
-                    الاسم
+                  <Label htmlFor="subject" className="text-sm font-medium mb-2 block">
+                    الموضوع *
                   </Label>
                   <Input 
-                    id="name" 
-                    placeholder="اسمك الكريم"
+                    id="subject" 
+                    {...register("subject", { required: "الموضوع مطلوب" })}
+                    placeholder="موضوع الرسالة"
                     className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
                   />
+                  {errors.subject && (
+                    <p className="text-sm text-destructive mt-1">{errors.subject.message}</p>
+                  )}
                 </div>
+                
                 <div>
-                  <Label htmlFor="email" className="text-sm font-medium mb-2 block">
-                    البريد الإلكتروني
+                  <Label htmlFor="message" className="text-sm font-medium mb-2 block">
+                    الرسالة *
                   </Label>
-                  <Input 
-                    id="email" 
-                    type="email" 
-                    placeholder="email@example.com"
-                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                  <Textarea 
+                    id="message" 
+                    {...register("message", { required: "الرسالة مطلوبة" })}
+                    placeholder="اكتب رسالتك هنا..."
+                    rows={6}
+                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 resize-none"
                   />
+                  {errors.message && (
+                    <p className="text-sm text-destructive mt-1">{errors.message.message}</p>
+                  )}
                 </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="subject" className="text-sm font-medium mb-2 block">
-                  الموضوع
-                </Label>
-                <Input 
-                  id="subject" 
-                  placeholder="موضوع الرسالة"
-                  className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="message" className="text-sm font-medium mb-2 block">
-                  الرسالة
-                </Label>
-                <Textarea 
-                  id="message" 
-                  placeholder="اكتب رسالتك هنا..."
-                  rows={6}
-                  className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 resize-none"
-                />
-              </div>
-              
-              <Button variant="hero" size="lg" className="w-full animate-scale-hover">
-                <Send className="h-5 w-5 mr-2" />
-                إرسال الرسالة
-              </Button>
+                
+                <Button 
+                  type="submit" 
+                  variant="hero" 
+                  size="lg" 
+                  className="w-full animate-scale-hover"
+                  disabled={isSubmitting}
+                >
+                  <Send className="h-5 w-5 mr-2" />
+                  {isSubmitting ? "جاري الإرسال..." : "إرسال الرسالة"}
+                </Button>
+              </form>
             </CardContent>
           </Card>
 
