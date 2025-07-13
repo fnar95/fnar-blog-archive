@@ -4,47 +4,18 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Play, Eye, Clock, Calendar } from "lucide-react";
 
 const YouTubeSection = () => {
-  // Sample YouTube videos data - في التطبيق الحقيقي، ستأتي من YouTube API
+  // فيديوهات قناة اليوتيوب الفعلية
   const videos = [
     {
       id: 1,
-      title: "أساسيات البرمجة للمبتدئين - كيف تبدأ رحلتك في التقنية",
-      description: "في هذا الفيديو أشرح الخطوات الأولى للدخول في عالم البرمجة وأهم اللغات التي يجب تعلمها",
-      thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=225&fit=crop",
-      duration: "15:30",
-      views: "12.5K",
+      title: "تصميم الانشطة التفاعلية في كانفا",
+      description: "ساعد طلابك على التعلم الذاتي بتصميم انشطة تفاعلية في كانفا",
+      thumbnail: "https://img.youtube.com/vi/UfK4mmULreg/maxresdefault.jpg",
+      duration: "12:45",
+      views: "2.1K",
       uploadDate: "منذ أسبوع",
-      category: "تعليمي"
-    },
-    {
-      id: 2,
-      title: "تجربتي في تطوير التطبيقات - نصائح من الواقع العملي",
-      description: "أحكي لكم تجربتي الشخصية في تطوير التطبيقات والتحديات التي واجهتني وكيف تغلبت عليها",
-      thumbnail: "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=400&h=225&fit=crop",
-      duration: "22:45",
-      views: "8.7K",
-      uploadDate: "منذ أسبوعين",
-      category: "تجارب شخصية"
-    },
-    {
-      id: 3,
-      title: "مستقبل الذكاء الاصطناعي - رؤية عملية للعشر سنوات القادمة",
-      description: "نظرة شاملة على تطور الذكاء الاصطناعي وتأثيره على مختلف القطاعات في المستقبل القريب",
-      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop",
-      duration: "18:20",
-      views: "19.2K",
-      uploadDate: "منذ 3 أسابيع",
-      category: "تحليل"
-    },
-    {
-      id: 4,
-      title: "إدارة الوقت في العصر الرقمي - استراتيجيات فعالة للإنتاجية",
-      description: "أساليب وأدوات عملية لإدارة الوقت بكفاءة والحفاظ على التوازن بين العمل والحياة الشخصية",
-      thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=225&fit=crop",
-      duration: "25:10",
-      views: "15.8K",
-      uploadDate: "منذ شهر",
-      category: "تطوير ذاتي"
+      category: "تعليمي",
+      videoUrl: "https://www.youtube.com/watch?v=UfK4mmULreg"
     }
   ];
 
@@ -89,7 +60,12 @@ const YouTubeSection = () => {
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Button variant="hero" size="lg" className="animate-scale-hover">
+                  <Button 
+                    variant="hero" 
+                    size="lg" 
+                    className="animate-scale-hover"
+                    onClick={() => window.open(video.videoUrl, '_blank')}
+                  >
                     <Play className="h-6 w-6 mr-2" />
                     مشاهدة
                   </Button>
@@ -125,7 +101,12 @@ const YouTubeSection = () => {
                       <span>{video.uploadDate}</span>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="hover:bg-primary/10"
+                    onClick={() => window.open(video.videoUrl, '_blank')}
+                  >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
                 </div>
@@ -135,7 +116,12 @@ const YouTubeSection = () => {
         </div>
         
         <div className="text-center">
-          <Button variant="hero" size="lg" className="animate-scale-hover">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="animate-scale-hover"
+            onClick={() => window.open('https://www.youtube.com/@%D9%81%D8%A7%D8%B6%D9%84%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%83', '_blank')}
+          >
             زيارة القناة
             <ExternalLink className="h-5 w-5 mr-2" />
           </Button>
